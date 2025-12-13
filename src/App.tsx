@@ -799,7 +799,7 @@ const tocLinks = [
   }, []);
 
   return { sections, loading, error, reload: load };
-}
+
 
 function Home() {
   const { sections, loading, error, reload } = useSections();
