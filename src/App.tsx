@@ -25,25 +25,31 @@ const sections: Section[] = [
           and the enthusiast community is extremely active.
         </p>
         <p>
-          More importantly, the former Saab Parts AB (formerly Orio AB), now
-          <a
-            href="https://hedinmobilitygroup.com/business-areas/distribution/spare-parts/orio-ab"
-            target="_blank"
-            rel="noopener"
-          >
-            Hedin Parts and Logistics AB
+          More importantly, the former Saab Parts AB (formerly Orio AB), now Hedin Parts &amp; Logistics AB (
+          <a href="http://saabparts.com" target="_blank" rel="noopener">
+            saabparts.com
           </a>
-          (also at <a href="http://www.saabparts.com/us/" target="_blank" rel="noopener">saabparts.com</a>), is alive and
-          well—and working to ensure availability of genuine Saab spare parts for the long term.
+          ) is alive and well — and working to ensure availability of genuine Saab spare parts for the long term. You can also
+          find the one of over a hundred
+          <a href="https://saabparts.com/us/book-a-service/" target="_blank" rel="noopener">
+            Official Service Centers
+          </a>{" "}
+          closest to you.
         </p>
+        <p>As a result, most of your searches for parts will end at step 1 or 2.</p>
         <p>
           This page is hosted by the <a href="http://www.saabclub.com" target="_blank" rel="noopener">Saab Club of North America</a>.
-          Please consider becoming a member if this resource was helpful. Thanks to Jim Hickstein for starting this site.
+          Please consider becoming a <a href="https://saabclub.com/join/" target="_blank" rel="noopener">member</a> if this
+          resource was helpful. Thanks to Jim Hickstein for starting this site.
         </p>
         <div className="callout">
           <b>Mythbusting:</b> Saab parts are not unobtainable or unaffordable. Saabs cost less to run than most comparable
           European cars, often being simpler, with fewer cylinders, and with GM-shared parts which bring the price of ownership
-          down. Plus, most Official Service Centers labor rates are well below new-car dealership rates.
+          down. Plus, most
+          <a href="https://saabparts.com/us/book-a-service/" target="_blank" rel="noopener">
+            Official Service Centers
+          </a>{" "}
+          labor rates are well below new-car dealership rates.
         </div>
       </>
     ),
@@ -58,6 +64,7 @@ const sections: Section[] = [
           yourself—if only to compare. If you&apos;ve ever wondered what the cryptic 7- or 8-digit codes on Saab parts are, now you
           know! Go down the rabbit hole too deep, and you&apos;ll find yourself memorizing them.
         </p>
+        <h3>Helpful resources for the advanced Saab owner</h3>
         <div className="two">
           <div>
             <h3>Factory tools</h3>
@@ -72,7 +79,7 @@ const sections: Section[] = [
                 <a href="https://esaabparts.com" target="_blank" rel="noopener">
                   Saab EPC (Electronic Parts Catalog)
                 </a>{" "}
-                — factory diagrams &amp; part numbers (taxonomy can be an art).
+                — factory diagrams &amp; part numbers (link redirects to eSaabParts, which roughly uses the EPC for navigation).
               </li>
             </ul>
           </div>
@@ -100,11 +107,23 @@ const sections: Section[] = [
           <ul>
             <li>
               When you can, don&apos;t only provide the part number—also provide full vehicle details (engine, transmission, trim,
-              options).
+              options). Saab Parts
+              <a href="https://saabparts.com/us/mysaabcar-online/saab-original-vin-decoder/" target="_blank" rel="noopener">
+                (VIN decoder)
+              </a>{" "}
+              and
+              <a href="http://esaabparts.com" target="_blank" rel="noopener">
+                eSaabParts
+              </a>
+              also have VIN decoders, where you can find out all of the relevant details of vehicle, such as suspension type,
+              brake disc size, options, colors, and more.
             </li>
-            <li>Some parts vary by options you wouldn’t expect (heated/folding/auto-dimming mirrors, etc.).</li>
+            <li>
+              Some parts vary by options you wouldn’t expect (heated/folding/auto-dimming mirrors, etc.). You can often find
+              these codes listed on the sticker in the driver’s front door jamb.
+            </li>
             <li>Some parts have special codes (springs/shocks). Brake components often require physical measurement.</li>
-            <li>Part numbers can be superseded—search using both the old and new numbers.</li>
+            <li>Part numbers can be superseded—search using both the old and new numbers. eSaabParts often lists all of the part numbers associated with a part.</li>
             <li>Make the seller tell you the part number, and ask whether it differs from what you expected.</li>
           </ul>
         ),
@@ -137,11 +156,22 @@ const sections: Section[] = [
           miles for parts and labor if installed by an Official Service Center.
         </p>
         <p>
-          <a href="http://www.saabparts.com/" target="_blank" rel="noopener">
+          <a href="http://saabparts.com" target="_blank" rel="noopener">
             Hedin
           </a>{" "}
-          maintains a list of Official Service Centers (OSCs) and affiliated parts retailers. <b>Shop around</b>: prices vary,
-          and some dealers have local stock when upstream is dry.
+          maintains a list of
+          <a href="https://saabparts.com/us/book-a-service/" target="_blank" rel="noopener">
+            Official Service Centers
+          </a>{" "}
+          (OSCs) and affiliated parts retailers. You can also find the one of over a hundred
+          <a href="https://saabparts.com/us/book-a-service/" target="_blank" rel="noopener">
+            Official Service Centers
+          </a>{" "}
+          closest to you
+          <a href="https://saabparts.com/us/book-a-service/" target="_blank" rel="noopener">
+            here
+          </a>
+          . <b>Shop around</b>: prices vary, and some dealers have local stock when upstream is dry.
         </p>
       </>
     ),
@@ -152,13 +182,13 @@ const sections: Section[] = [
         content: (
           <ul>
             <li>
-              <b>eSaabParts</b> — <a href="http://esaabparts.com" target="_blank" rel="noopener">eSaabParts.com</a> (often
+              <b>eSaabParts</b> — <a href="http://esaabparts.com" target="_blank" rel="noopener">eSaabParts.com</a> — often
               strong pricing; supports the
-              <a href="https://www.saabmuseumusa.com/" target="_blank" rel="noopener">Saab Heritage Car Museum USA</a>).
+              <a href="https://www.saabmuseumusa.com/" target="_blank" rel="noopener">Saab Heritage Car Museum USA</a>.
             </li>
             <li>
-              <b>eEuroParts</b> — <a href="http://eeuroparts.com" target="_blank" rel="noopener">eEuroParts.com</a> (OEM +
-              aftermarket).
+              <b>eEuroParts</b> — <a href="http://eeuroparts.com" target="_blank" rel="noopener">eEuroParts.com</a> — OEM +
+              aftermarket.
             </li>
             <li>
               <b>Saab Parts Counter</b> —
@@ -188,7 +218,7 @@ const sections: Section[] = [
         content: (
           <>
             <div className="callout">
-              <b>Maptun Dealers:</b>
+              <b>MapTun Dealers:</b>
               <ul>
                 <li>
                   <a href="http://www.maptun.com" target="_blank" rel="noopener">
@@ -200,13 +230,13 @@ const sections: Section[] = [
                   <a href="https://www.europeanmotorsvc.com/maptun-parts-kits" target="_blank" rel="noopener">
                     European Motor Services
                   </a>{" "}
-                  — PA. Authorized MAPTUN performance parts distributor.
+                  — PA. Authorized MapTun performance parts distributor.
                 </li>
                 <li>
                   <a href="https://swedespeede.com/collections/saab-tuning" target="_blank" rel="noopener">
                     SwedeSpeede
                   </a>{" "}
-                  — MAPTUN tuning and performance parts.
+                  — MapTun tuning and performance parts.
                 </li>
               </ul>
             </div>
@@ -277,6 +307,11 @@ const sections: Section[] = [
             <li>
               <a href="http://www.partsgeek.com" target="_blank" rel="noopener">
                 PartsGeek
+              </a>
+            </li>
+            <li>
+              <a href="https://www.autohausaz.com/" target="_blank" rel="noopener">
+                AutohausAZ
               </a>
             </li>
           </ul>
@@ -483,6 +518,12 @@ const sections: Section[] = [
         content: (
           <ul>
             <li>
+              United States — <a href="https://www.modernclassicsaab.com" target="_blank" rel="noopener">Modern Classic Saab</a>
+              {" "}
+              — Jordan Pagano is a mainstay of the community as a tuner and fabricator. Has plenty of reproduction parts that are
+              off of his already-extensive catalog, with many, many cars. Primarily specializing in C900s.
+            </li>
+            <li>
               Netherlands — <a href="https://www.saabworld.nl" target="_blank" rel="noopener">Saab World</a>
             </li>
             <li>
@@ -494,7 +535,7 @@ const sections: Section[] = [
               V4 cars and powertrain components for 99 &amp; 900.
             </li>
             <li>
-              Taiwan — <a href="https://www.saab900go.com" target="_blank" rel="noopener">Saab 900 Go</a> — Performance parts.
+              Taiwan — <a href="https://www.saab900go.com" target="_blank" rel="noopener">Saab 900 Go</a> — Reproductions of hard-to-find 900 parts.
             </li>
             <li>
               United Kingdom — <a href="https://www.abbottsaab.com" target="_blank" rel="noopener">Abbott Saab</a> — Tuners from
@@ -503,11 +544,6 @@ const sections: Section[] = [
             <li>
               <a href="https://www.facebook.com/p/JK-Saabwerx-61560660335370/" target="_blank" rel="noopener">JK Saabwerx</a> —
               Makes fuel system products for C900s.
-            </li>
-            <li>
-              United States — <a href="https://www.modernclassicsaab.com" target="_blank" rel="noopener">Modern Classic Saab</a>{" "}
-              — Jordan Pagano is a mainstay of the community as a tuner and fabricator. Has plenty of off-catalog parts for many,
-              many cars. Primarily specializing in C900s.
             </li>
             <li>
               <a href="https://www.saabstickers.com" target="_blank" rel="noopener">Saab Stickers</a> — Just for fun,
@@ -524,6 +560,10 @@ const sections: Section[] = [
             <li>
               Netherlands — <a href="https://shop.kcperformance.eu/collections/saab-parts" target="_blank" rel="noopener">KC Performance</a>{" "}
               — Also Classic 99 &amp; 900. Performance parts.
+            </li>
+            <li>
+              Poland — <a href="https://tunstyle.eu" target="_blank" rel="noopener">TunStyle</a> — Custom bodykits and interior
+              details, including Hirsch replica parts.
             </li>
             <li>
               Sweden — <a href="https://hblom.se" target="_blank" rel="noopener">hblom.se</a> — Upgrades &amp; future-proofing
@@ -561,7 +601,8 @@ const sections: Section[] = [
               relationship—asking about the part by number/code (without leading with "Saab") can help.
             </li>
             <li>
-              Germany — <a href="https://stephan-individual.de/en_GB" target="_blank" rel="noopener">Stephan Individual</a>— Lots
+              Germany — <a href="https://stephan-individual.de/en_GB" target="_blank" rel="noopener">Stephan Individual</a> —
+              Lots
               of custom, rare late-model parts.
             </li>
             <li>
@@ -571,6 +612,10 @@ const sections: Section[] = [
             <li>
               United Kingdom — <a href="https://www.abbottsaab.com" target="_blank" rel="noopener">Abbott Saab</a> — Tuners from
               the UK, respected, but niche.
+            </li>
+            <li>
+              Poland — <a href="https://tunstyle.eu" target="_blank" rel="noopener">TunStyle</a> — Custom bodykits and interior
+              details, including Hirsch replica parts.
             </li>
             <li>
               Netherlands — <a href="https://www.jendvandenbosch.nl" target="_blank" rel="noopener">J&amp;D van den Bosch</a>
@@ -702,6 +747,17 @@ const sections: Section[] = [
       },
     ],
   },
+  {
+    id: "save",
+    title: "Save Your Saab!",
+    description: (
+      <p>
+        Saab isn’t making cars anymore, and parts are around. Given that, if you want to pass your Saab on to a new home, please
+        consider selling it whole to an enthusiast. People in the Facebook groups and forums above are often happy to take on
+        projects of any depth, and would be more than happy to give friendly, reasonable advice. Have a heart — save a Saab.
+      </p>
+    ),
+  },
 ];
 
 const tocLinks = [
@@ -711,14 +767,7 @@ const tocLinks = [
   { id: "used", label: "Step 3 — Buy used", caption: "Specialty yards + aggregators" },
   { id: "international", label: "Step 4 — International & model-specific", caption: "Global suppliers + model-specific" },
   { id: "community", label: "Ask around", caption: "Facebook + non-Facebook forums" },
-];
-
-const chips = [
-  "1) Get the part number",
-  "2) Check OEM / new sources",
-  "3) Check used sources",
-  "4) Check international & model-specific",
-  "5) Ask the community",
+  { id: "save", label: "Save Your Saab!", caption: "Keep Saabs whole" },
 ];
 
 export default function App() {
@@ -756,23 +805,16 @@ export default function App() {
         <p className="sub">
           "Saab? You can&apos;t get parts for those anymore." <b>You want to bet?</b>
           <br />
-          Saab parts are often easier to source than people assume—if you start with the right part number, know the best
-          suppliers, and use the community strategically.
+          Saab parts are often easier to source than people assume.
           <br />
-          Plus, there are over a hundred Official Service Centers and many, many more independents out there willing and able to
-          work on your Saab.
+          Plus, there are over a hundred
+          <a href="https://saabparts.com/us/book-a-service/" target="_blank" rel="noopener">
+            Official Service Centers
+          </a>{" "}
+          and many, many more independents out there willing and able to work on your Saab.
           <br />
           <b>Yes, it is possible to daily-drive your Saab over a decade after the last one was made.</b>
-          <br />
-          Here are the steps to follow to get the part you need:
         </p>
-        <div className="chips" aria-label="Quick steps">
-          {chips.map(step => (
-            <span key={step} className="chip">
-              {step}
-            </span>
-          ))}
-        </div>
         <div className="btnrow">
           <button type="button" onClick={() => setAllDetails(true)}>
             Expand all
