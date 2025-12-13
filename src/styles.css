@@ -166,6 +166,72 @@ nav:not(.collapsed) .nav-toggle:before {
   content: "✕ ";
 }
 
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-top: 16px;
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  margin-bottom: 10px;
+}
+
+.resource-list {
+  display: grid;
+  gap: 10px;
+}
+
+.resource {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.resource-heading {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+input,
+textarea,
+select,
+button {
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--sans);
+}
+
+textarea {
+  min-height: 80px;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.callout.error {
+  border-left: 4px solid #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+}
+
 @media (max-width: 900px) {
   html,
   body {
