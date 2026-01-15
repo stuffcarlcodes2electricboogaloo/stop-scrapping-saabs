@@ -3,27 +3,12 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import dotenv from "dotenv";
 import crypto from "crypto";
 import mysql from "mysql2/promise";
-
-dotenv.config();
-
-const {
-  MYSQL_HOST = "localhost",
-  MYSQL_PORT = 3306,
-  MYSQL_USER = "saab_app",
-  MYSQL_PASSWORD = "saab_app",
-  MYSQL_DATABASE = "saab_links",
-  SESSION_SECRET = "change-me",
-} = process.env;
+import { adminSeed, mysqlConfig, sessionConfig, vectorConfig } from "./config.js";
 
 const pool = mysql.createPool({
-  host: MYSQL_HOST,
-  port: Number(MYSQL_PORT),
-  user: MYSQL_USER,
-  password: MYSQL_PASSWORD,
-  database: MYSQL_DATABASE,
+  ...mysqlConfig,
   waitForConnections: true,
   connectionLimit: 10,
 });
@@ -41,40 +26,48 @@ async function ensureSchema() {
   `);
 
   await pool.execute(`
-    CREATE TABLE IF NOT EXISTS sections (
+    CREATE TABLE IF NOT EXISTS issues (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      slug VARCHAR(80) UNIQUE NOT NULL,
-      title VARCHAR(255) NOT NULL,
-      description TEXT,
-      position INT DEFAULT 0,
+      title VARCHAR(255) UNIQUE NOT NULL,
+      published_at DATE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
   await pool.execute(`
-    CREATE TABLE IF NOT EXISTS resources (
+    CREATE TABLE IF NOT EXISTS articles (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      section_id INT NOT NULL,
-      label VARCHAR(255) NOT NULL,
-      url VARCHAR(1024) NOT NULL,
-      blurb TEXT,
-      position INT DEFAULT 0,
+      issue_id INT,
+      title VARCHAR(255) NOT NULL,
+      summary TEXT NOT NULL,
+      content LONGTEXT,
+      page_range VARCHAR(80),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
+      FOREIGN KEY (issue_id) REFERENCES issues(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS article_chunks (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      article_id INT NOT NULL,
+      chunk_index INT NOT NULL,
+      content TEXT NOT NULL,
+      vector_id VARCHAR(128),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
   const [rows] = await pool.execute("SELECT COUNT(*) as count FROM users WHERE role='admin'");
   const { count } = rows[0];
   if (count === 0) {
-    const username = process.env.ADMIN_USER || "admin";
-    const password = process.env.ADMIN_PASSWORD || "changeme";
-    const { hash, salt } = hashPassword(password);
+    const { hash, salt } = hashPassword(adminSeed.password);
     await pool.execute(
       "INSERT INTO users (username, password_hash, salt, role) VALUES (?,?,?, 'admin')",
-      [username, hash, salt]
+      [adminSeed.username, hash, salt]
     );
-    console.log(`Seeded admin user '${username}' with the configured password.`);
+    console.log(`Seeded admin user '${adminSeed.username}' with the configured password.`);
   }
 }
 
@@ -122,7 +115,7 @@ const app = express();
 app.use(express.json());
 app.use(
   session({
-    secret: SESSION_SECRET,
+    secret: sessionConfig.secret,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, sameSite: "lax" },
@@ -145,6 +138,56 @@ function requireAdmin(req, res, next) {
   next();
 }
 
+async function getOrCreateIssue(title, publishedAt) {
+  if (!title) return null;
+  const [rows] = await pool.execute("SELECT id FROM issues WHERE title = ?", [title]);
+  if (rows.length) {
+    return rows[0].id;
+  }
+  const [result] = await pool.execute("INSERT INTO issues (title, published_at) VALUES (?, ?)", [title, publishedAt || null]);
+  return result.insertId;
+}
+
+async function fetchArticles(searchTerm) {
+  if (searchTerm) {
+    const like = `%${searchTerm}%`;
+    const [rows] = await pool.execute(
+      `
+      SELECT articles.id, articles.title, articles.summary, articles.page_range as pageRange, issues.title as issue
+      FROM articles
+      LEFT JOIN issues ON articles.issue_id = issues.id
+      WHERE articles.title LIKE ? OR articles.summary LIKE ? OR articles.content LIKE ?
+      ORDER BY articles.created_at DESC
+      LIMIT 20
+    `,
+      [like, like, like]
+    );
+    return rows;
+  }
+
+  const [rows] = await pool.execute(
+    `
+      SELECT articles.id, articles.title, articles.summary, articles.page_range as pageRange, issues.title as issue
+      FROM articles
+      LEFT JOIN issues ON articles.issue_id = issues.id
+      ORDER BY articles.created_at DESC
+      LIMIT 12
+    `
+  );
+  return rows;
+}
+
+app.get("/api/health", (_req, res) => {
+  res.json({
+    status: "ok",
+    vector: {
+      provider: vectorConfig.provider,
+      url: vectorConfig.url,
+      collection: vectorConfig.collection,
+    },
+  });
+});
+
 app.post("/api/auth/login", passport.authenticate("local"), (req, res) => {
   res.json({ user: req.user });
 });
@@ -160,65 +203,34 @@ app.get("/api/auth/me", (req, res) => {
   res.json({ user: req.user || null });
 });
 
-app.get("/api/sections", async (_req, res, next) => {
+app.get("/api/articles", async (req, res, next) => {
   try {
-    const [sections] = await pool.execute("SELECT * FROM sections ORDER BY position, id");
-    const [resources] = await pool.execute("SELECT * FROM resources ORDER BY position, id");
-    const grouped = sections.map((section) => ({
-      ...section,
-      resources: resources.filter((r) => r.section_id === section.id),
-    }));
-    res.json(grouped);
+    const term = typeof req.query.q === "string" ? req.query.q.trim() : "";
+    const results = await fetchArticles(term);
+    res.json(results);
   } catch (error) {
     next(error);
   }
 });
 
-app.post("/api/sections", requireAuth, requireAdmin, async (req, res, next) => {
+app.get("/api/admin/articles", requireAuth, requireAdmin, async (_req, res, next) => {
   try {
-    const { slug, title, description, position = 0 } = req.body;
+    const results = await fetchArticles("");
+    res.json(results);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/api/admin/articles", requireAuth, requireAdmin, async (req, res, next) => {
+  try {
+    const { title, summary, content, issueTitle, publishedAt, pageRange } = req.body;
+    const issueId = await getOrCreateIssue(issueTitle, publishedAt);
     await pool.execute(
-      "INSERT INTO sections (slug, title, description, position) VALUES (?,?,?,?)",
-      [slug, title, description, position]
+      "INSERT INTO articles (issue_id, title, summary, content, page_range) VALUES (?,?,?,?,?)",
+      [issueId, title, summary, content, pageRange]
     );
     res.status(201).json({ success: true });
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.post("/api/resources", requireAuth, requireAdmin, async (req, res, next) => {
-  try {
-    const { sectionId, label, url, blurb = "", position = 0 } = req.body;
-    await pool.execute(
-      "INSERT INTO resources (section_id, label, url, blurb, position) VALUES (?,?,?,?,?)",
-      [sectionId, label, url, blurb, position]
-    );
-    res.status(201).json({ success: true });
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.put("/api/resources/:id", requireAuth, requireAdmin, async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { label, url, blurb, position } = req.body;
-    await pool.execute(
-      "UPDATE resources SET label = ?, url = ?, blurb = ?, position = ? WHERE id = ?",
-      [label, url, blurb, position ?? 0, id]
-    );
-    res.json({ success: true });
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.delete("/api/resources/:id", requireAuth, requireAdmin, async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    await pool.execute("DELETE FROM resources WHERE id = ?", [id]);
-    res.json({ success: true });
   } catch (error) {
     next(error);
   }
